@@ -1,0 +1,25 @@
+At the scheme, you can see:
+
+I made debounce circuit for the button, instead to software debounce. I did this because i was not sure if the software debounce will not
+influence the delay between press and flashing.
+I used this calculator to calculate the circuit:
+https://protological .com/debounce-calaculator/
+
+I added secondary LED to indicate end of the procedure and resetting part of the code.
+
+There are also 4 pins for the board to reprogram it easily with arduino in case i would like to make some changes, which i will.
+
+What can be done to improve the procedure:
+
+Let say, you have 15 basic rounds which will be added to some random rounds and you get 23 normal rounds, where the delay is longer.
+I am thinking about improving the code, in which you start with few rounds with 80ms delay and then go to 150ms or even 200ms with
+proportional increments, so you get "reprogrammed" even more.
+
+I will try to implement some code which will put the device on rest if you forget to turn it off and you are not using it for some time.
+
+then you get your 5 last round which will be with very short delay.
+
+About the fast rounds:
+I noticed, that i feel only the first one to be weird. Next ones are less obvious, i think it is because my brain is "reprogramming" itself
+to the short delay.
+
