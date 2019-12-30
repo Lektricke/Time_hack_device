@@ -18,12 +18,12 @@ How it works
 You are pressing the button several times, after each press, LED flashes for short time, to indicate the button.
 How many times? - it is choosen randomly, but let say 15 at least.
 the light flashes with some delay after you pressed the button, for the set up rounds, it is around 100ms (actually i set it to 150).
-Your brain learned, that these events occures at the same time, so you start to ignore the delay.
+Your brain learned, that these events occure at the same time, so you start to ignore the delay.
 After some presses was executed, the delay time changes to very short. I gave it 10ms, since i was not sure if the program itself is not
-putting there another delay by executing commands. (It is because i know about these microcontrollers almost nothing, but i am going to learn it.)
+putting there another delay by executing commands. (It is because i know almost nothing about these microcontrollers , but i am going to learn it.)
 
 And you will see that you get very weird feeling about what happened, you will feel like the flash happened before the press.
 
-I have to say, that it will need more experimenting and more setting all up. But the concept work.
+I have to say, that it will need more experimenting and more setting all up. But the concept works.
 
 
