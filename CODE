@@ -1,0 +1,83 @@
+/*
+  David Eagleman brain time hacking device
+
+  Inspired by lecture by David Eagleman about how brain sences time and events.
+
+
+
+  created by Peter Ist.
+  29.12.2019
+  This code is in the public domain.
+*/
+const int buttN = 4;                                    // hardware debounce button mounted on pin 4
+const int endloopLED = 1;                               // One red LED will indicate when the procedure ends
+const int Flash = 0;                                    // Flash pin on which the flashing LED is connected with 470 ohm resistor
+
+const int normDelay = 150;                              // value for normal delay between the pushing and LED flash
+const int minDelay = 5;                                 // minimum ms delay between button pressed and LED flash
+const int BaseRound = 15;                               // amount of base rounds in one procedure - this is basic if the random generates 0, to have at least few rounds to "program" the brain
+const int superRound = 5;                               // these 5 rounds will be executed after normal rounds expired, each round will have flash delay set to minimum
+const int LedDelay = 10;                                // this is the delay for flash led, so it is on for some time.
+
+long randNumber;                                        // amount of random aditional rounds so you can not predict when delay changes
+int i = 0;                                              // counter of rounds
+int normalRound = 0;                                    // set initial value for normal rounds, it will be replaced by the random generator equation. These rounds will have flash delay set to normDelay
+int timeHack = 0;                                       // initial value for the all rounds one procedure will have. If your base rounds is 15 and random rounds is 3, you will have 18 flashes with normal delay and 5 fast, together you will flash 23 times
+int lastBT = 0;                                         // last button state indicator. When this is 1, the led will not flash while the loop is cycling. 1 indicates that the button is hold down.
+           
+void setup() {                                          // the setup function runs once when you press reset or power the board
+  pinMode(Flash, OUTPUT);                                   // output pin on which the led is mounted
+  pinMode(buttN, INPUT);                                // input pin on which the button is mounted
+  pinMode(endloopLED, OUTPUT);
+  randomSeed(analogRead(3));                            // pin 3 on ATTINY85 is not connected so it floats, this is feed for random generator
+}
+
+void loop() {
+  if (normalRound <= 0) {                                 // if normal rounds is initial or have been reset to initial, generate random number 0-10
+    randNumber = random(10);
+    normalRound = randNumber + BaseRound;                 // create value for how many normal delay rounds there will be until the short delay starts
+    timeHack = normalRound + superRound;                  // add super round to normal round, this value will help execute last 5 round with minimum flash delay
+  }
+  if (digitalRead(buttN) == LOW) {                           // if button is pressed
+    if (lastBT == 0) {                                      // check if the button is not hold pressed, if not, execute flash
+      if (i <= normalRound) {                               // if the counter of normal rounds is not full, execute flashing with normal delay
+        delay(normDelay);
+        digitalWrite(0, HIGH);                              // set the LED on
+        lastBT = 1;                                         // set the mark that the button was 1 already. If this is not rewrited to 0, in next loop the LED will not go ON
+        delay(LedDelay);                                           // delay to let things calm :)
+        digitalWrite(0, LOW);                               // turn off the LED
+      }
+
+      if (normalRound < i < timeHack) {                     // if the counter is bigger than normal rounds, that means you pressed the button sufficient times, you will now get 5 rounds with fast flash
+        delay(minDelay);
+        digitalWrite(0, HIGH);                              // set the LED on
+        lastBT = 1;                                         // set the mark that the button was 1 already. If this is not rewrited to 0, in next loop the LED will not go ON
+        delay(LedDelay);                                           // delay to let things calm :)
+        digitalWrite(0, LOW);                               // turn off the LED
+      }
+      if (i == timeHack) {                                   // when you reach at the end of the procedure
+        for (int m = 0; m <= 4; m++) {                        // blink both LEDs
+          digitalWrite(Flash, HIGH);
+          digitalWrite(endloopLED, HIGH);
+          delay(200);
+          digitalWrite(Flash, LOW);
+          digitalWrite(endloopLED, LOW);
+          delay(200);
+        }
+        digitalWrite(endloopLED, HIGH);                     // turn on LEDs once again to indicate reseting variables
+        digitalWrite(Flash, HIGH);
+        normalRound = 0;                                    // reset normalRound to 0 so you can start over
+        i = 0;                                              // reset counter to 0 so you can start over
+        delay(1000);                                          // wait a little to calm down
+        digitalWrite(endloopLED, LOW);                      // turn the reset LED off so you know you can start over
+        digitalWrite(Flash, LOW);
+        delay(10);                                          // not enough delay for the world.
+      }
+       i = i + 1;                                          // increase round counter
+    }
+  }
+  if (digitalRead(buttN) == HIGH) {                      //if the button is not pressed
+    digitalWrite(Flash, LOW);                         // set led off
+    lastBT = 0;                                      // set that the button was off, so you can turn the flash led on again
+  }
+}
