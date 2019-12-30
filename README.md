@@ -6,7 +6,7 @@ Note on the beginning: I am totally lame with electronics, if you find this proj
 Theory and background story:
 
 David Eagleman is one of my favorite author writing about his endeavours with studying brain.
-Besides his great books which i recommend to read for everyone, you can some of his explanations on the web, as video lectures and talk.
+Besides his great books which i recommend to read for everyone, you can see some of his explanations on the web, as video lectures and talks.
 In one of those talks, he sumarises how they studied the time perception in brain. Unfortunatelly, i could not find the lecture i saw, instead i found that Michael from V-sauce made short digest. At about 4:38 You can wath this here:
 https://www. youtube. com/watch?v=BTOODPf-iuc
 
@@ -15,8 +15,8 @@ I am not even slightly good in programming C so it is a mess and it took some ti
 
 How it works
 
-You are pressing the button several times,
-how many times - it is choosen randomly, but let say 15 at least.
+You are pressing the button several times, after each press, LED flashes for short time, to indicate the button.
+How many times? - it is choosen randomly, but let say 15 at least.
 the light flashes with some delay after you pressed the button, for the set up rounds, it is around 100ms (actually i set it to 150).
 Your brain learned, that these events occures at the same time, so you start to ignore the delay.
 After some presses was executed, the delay time changes to very short. I gave it 10ms, since i was not sure if the program itself is not
